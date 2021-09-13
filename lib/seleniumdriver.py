@@ -79,7 +79,7 @@ def get_source(driverType, path='.'):
         elif os == 'Linux' and bits == '32bit':
             source = join(path, 'webdriver/phantomjsdriver_2.1.1_linux32/phantomjs')
         elif os == 'Linux' and bits == '64bit':
-            source = join(path, 'webdriver/phantomjsdriver_2.1.1_linux64/phantomjs')
+            source = join(path, 'webdriver/phantomjsdriver_1.9.8_linux64/phantomjs')
         else:
             raise Exception('Failed to recognize your OS [%s / %s].' % (os, bits))
     elif driverType == 'Chrome':
