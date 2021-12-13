@@ -33,6 +33,7 @@ def get(driverType, localDriver=True, headless=False, path='.'):
         # phantomjs_options.add_argument("--disable-web-security")
         if localDriver:
             source = get_source(driverType, path)
+            # driver = webdriver.PhantomJS(executable_path=source, service_log_path=join(path, 'phantomjs.log'))
             driver = webdriver.PhantomJS(executable_path=source, service_log_path=join(path, 'phantomjs.log'), service_args=["--remote-debugger-port=9000", "--web-security=false"])
             # driver = webdriver.PhantomJS(executable_path=source, service_args=["--remote-debugger-port=9000", "--web-security=false"])
         else:
@@ -59,6 +60,7 @@ def get(driverType, localDriver=True, headless=False, path='.'):
         firefox_options = Options()
         firefox_options.add_argument("--start-maximized")
         firefox_options.add_argument("--disable-infobars")
+        firefox_options.binary_location = 'webdriver/geckodriver_0.19.1_linux64/geckodriver/geckodriver'
         if localDriver:
             source = get_source(driverType, path)
             driver = webdriver.Firefox(executable_path=source, service_log_path=join(path, 'geckodriver.log'), firefox_options=firefox_options)
@@ -80,6 +82,7 @@ def get_source(driverType, path='.'):
             source = join(path, 'webdriver/phantomjsdriver_2.1.1_linux32/phantomjs')
         elif os == 'Linux' and bits == '64bit':
             source = join(path, 'webdriver/phantomjsdriver_1.9.8_linux64/phantomjs')
+            # source = join(path, 'webdriver/phantomjsdriver_2.1.1_linux64/phantomjs')
         else:
             raise Exception('Failed to recognize your OS [%s / %s].' % (os, bits))
     elif driverType == 'Chrome':

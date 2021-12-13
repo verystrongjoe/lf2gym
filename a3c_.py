@@ -11,8 +11,6 @@ import tensorflow as tf
 import numpy as np
 
 from a3c_network import *
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
 # Sample code from here
@@ -29,18 +27,12 @@ def main(args):
         import lf2gym
         from lf2gym import Difficulty
 
-        # env = lf2gym.make(startServer=True, driverType=lf2gym.WebDriver.Chrome,
-        #                   characters=[lf2gym.Character[args.opponent], lf2gym.Character[args.player]],
-        #                   versusPlayer=True)
-
         # url = 'http://127.0.0.1:' + str(args.port)
         envs = [lf2gym.make(
                     startServer=True,
-                    headless=True,
                     driverType=lf2gym.WebDriver.Chrome,
-                    difficulty=Difficulty.Challengar,
-                    # characters=[lf2gym.Character[args.opponent], lf2gym.Character[args.player]],
-                    versusPlayer=False,
+                    headless=True,
+                    # difficulty=Difficulty.Challengar,
                     port=args.port+i) for i in range(args.thread)]
         # [env.reduce_action_space(13) for env in envs]
         try:
@@ -59,7 +51,7 @@ def main(args):
                 sess.run(tf.global_variables_initializer())
 
             if not os.path.exists(args.savepath):
-                os.makedirs(args.savepath, exist_ok=True)
+                os.mkdir(args.savepath)
 
             path = args.savepath + 'output_thread.log'
             t_writer = open(path, 'w')
@@ -123,16 +115,12 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("--player", default="Bandit", help="your character")
-    parser.add_argument("--opponent", default="Bandit", help="your enemy")
-    parser.add_argument("--interval", default=0.2, help="your enemy")
-
     parser.add_argument("--train", action="store_true")
     parser.add_argument("--retrain", action="store_true")
     parser.add_argument("--test_chrome", action="store_true")
     parser.add_argument("--test", action="store_true")
 
-    parser.add_argument('--thread', type=int, default=8, help='Number of threads to use during training.')
+    parser.add_argument('--thread', type=int, default=2, help='Number of threads to use during training.')
     parser.add_argument('--tmax', type=int, default=80000000, help='Number of training timesteps.')
     parser.add_argument('--port', type=int, default=8000, help='Server Port.')
 
